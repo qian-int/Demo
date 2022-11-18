@@ -4,6 +4,7 @@ package com.example.easyexceldemo.controller;
 import com.example.easyexceldemo.dto.PeopleDto;
 import com.example.easyexceldemo.entity.People;
 import com.example.easyexceldemo.service.IPeopleService;
+import com.example.easyexceldemo.service.impl.PeopleServiceImpl;
 import com.example.easyexceldemo.utils.Result;
 import com.example.easyexceldemo.utils.UuidUtils;
 import com.example.easyexceldemo.vo.PeopleVo;
@@ -33,36 +34,54 @@ public class PeopleController {
     @Autowired
     private IPeopleService peopleService;
 
+    /**
+     * 新增人员
+     * @param peopleDto
+     * @return
+     */
     @PostMapping("/insert")
     public Result<String> insert(@RequestBody PeopleDto peopleDto){
         return peopleService.insert(peopleDto);
     }
 
 
+    /**
+     * 查看人员详情
+     * @param peopleId 人员id
+     * @return PeopleVo
+     */
     @GetMapping("/getPeopleDetail")
     public Result<PeopleVo> getPeopleList(@RequestParam(value = "peopleId")String peopleId){
         return peopleService.getPeopleList(peopleId);
     }
 
+    /**
+     * 批量新增
+     * @param peopleDto 新增对象
+     * @return boolean
+     */
     @PostMapping("/save")
     public Result<Boolean> save(@RequestBody PeopleDto peopleDto){
-        People people = new People();
-        BeanUtils.copyProperties(peopleDto,people);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime localDateTime = LocalDateTime.parse(peopleDto.getBirthday(), dateTimeFormatter);
-        people.setBirthday(localDateTime);
-        people.setId(UuidUtils.sampleUUID());
-        people.setCreateBy("qqq");
-        people.setCreateTime(LocalDateTime.now());
-        people.setDelFlag("0");
+        People people = PeopleServiceImpl.getPeople(peopleDto);
         return Result.success(peopleService.save(people));
     }
 
+    /**
+     * 文件导出
+     * @param httpServletResponse
+     * @throws IOException
+     */
     @GetMapping("/export")
     public void export(HttpServletResponse httpServletResponse) throws IOException {
         peopleService.export(httpServletResponse);
     }
 
+    /**
+     * 文件导入
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/import")
     public Result<String> importData(@RequestBody MultipartFile file) throws IOException {
         return peopleService.importData(file);

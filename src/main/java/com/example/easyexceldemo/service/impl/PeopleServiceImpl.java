@@ -70,6 +70,12 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> impleme
      */
     @Override
     public Result<String> insert(PeopleDto peopleDto) {
+        People people = getPeople(peopleDto);
+        peopleMapper.insert(people);
+        return Result.success(people.getId());
+    }
+
+    public static People getPeople(PeopleDto peopleDto) {
         People people = new People();
         BeanUtils.copyProperties(peopleDto,people);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -79,8 +85,7 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> impleme
         people.setCreateBy("qqq");
         people.setCreateTime(LocalDateTime.now());
         people.setDelFlag("0");
-        peopleMapper.insert(people);
-        return Result.success(people.getId());
+        return people;
     }
 
     @Override
@@ -106,7 +111,7 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> impleme
         //设置文件名,ps:把字符串中所有的‘+’替换成‘%20’代表空格
         String fileName = URLEncoder.encode("人员表","UTF-8").replaceAll("\\+","%20");
         //设置响应头
-            httpServletResponse.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        httpServletResponse.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
         //获取全部的数据
         QueryWrapper<People> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("del_flag","0");
