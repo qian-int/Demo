@@ -19,3 +19,11 @@ mybatis-plus:
   #配置日志
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 阿里云OSS配置
+aliyun:
+  oss:
+    end-point: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: LTAI5t6Th7kmiG4E6WJLgMC3
+    access-key-secret: eDPHoAEq7nJXAtEOELYFPGaM19K2CP
+    bucket-name: qqq-ceshi
