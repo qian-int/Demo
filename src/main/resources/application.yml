@@ -27,3 +27,15 @@ aliyun:
     access-key-id: LTAI5t6Th7kmiG4E6WJLgMC3
     access-key-secret: eDPHoAEq7nJXAtEOELYFPGaM19K2CP
     bucket-name: qqq-ceshi
+  #阿里视频直播
+  live:
+    #推流
+    pushDomin: livepush.zjtuojing.com
+    pushIndentKey: 0qFNOkPoKyymwAcD
+    #播流
+    pullDomin: livepull.zjtuojing.com
+    pullIdentKey: cY0Pm61uQ2ooURCS
+    #appName自定义
+    appName: test
+    #鉴权url过期时间 有效时间（秒）
+    identUrlVaildTime: 1800
