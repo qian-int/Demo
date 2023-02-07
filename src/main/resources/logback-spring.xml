@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <!-- 定义配置属性，可以直接使用该属性的值,格式:${name} -->
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c %M %L [%thread] %m%n"/>
+    <property name="dir" value="D://logs"/>
+
+    <!--控制台打印-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志消息输出格式设置-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <!-- 过滤掉日志级别在ERROR级别下的日志 -->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>INFO</level>-->
+<!--            &lt;!&ndash; ACCEPT：表示不用看后面的过滤器了，这里就给直接同意了，需要记录。 &ndash;&gt;-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            &lt;!&ndash;DENY：表示不用看后面的过滤器了，这里就给拒绝了，不作记录&ndash;&gt;-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+    </appender>
+
+    <!--文件输出-->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>testLogBack.log</file>
+        <!-- 默认为true 事件将附加到现有文件的末尾。否则，如果append为false，则任何现有文件都将被截断 -->
+        <append>true</append>
+        <!-- 日志消息输出格式设置-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志的拆分和压缩的Appender-->
+    <appender name="rollFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dir}/roll_logback.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <!-- 拆分跪规则 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--按时间和压缩格式声明拆分的文件名-->
+            <fileNamePattern>${dir}/rolling.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 基于大小和时间的滚动策略 -->
+    <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dir}/rolling_logback.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${dir}/rolling_myLog-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <!-- 单个文件最大设置 当日志文件大于当前设置的最大文件大小时会生成新增日志文件 -->
+            <maxFileSize>1MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 固定窗口大小的文件滚动策略 -->
+    <appender name="ckFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${dir}/test.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${dir}/tests.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>1MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 自定义evaluator发送邮件 -->
+    <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
+        <from>2935331664@qq.com</from>
+        <to>2698608766@qq.com</to>
+        <subject>测试email发送日志</subject>
+        <smtpHost>smtp.qq.com</smtpHost>
+        <username>2935331664@qq.com</username>
+        <password>dsifxqgndnfsdfid</password>
+        <layout class="ch.qos.logback.classic.html.HTMLLayout"/>
+        <evaluator class="com.example.easyexceldemo.evaluator.MyEvaluator"/>
+    </appender>
+
+    <!-- 基于标记触发发送邮件 -->
+    <appender name="autoMail" class="ch.qos.logback.classic.net.SMTPAppender">
+        <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+            <marker>a</marker>
+            <marker>TRANSACTION_FAILURE</marker>
+        </evaluator>
+        <smtpHost>smtp.qq.com</smtpHost>
+        <subject>测试基于标记email发送日志</subject>
+        <from>2935331664@qq.com</from>
+        <to>2698608766@qq.com</to>
+        <username>2935331664@qq.com</username>
+        <password>dsifxqgndnfsdfid</password>
+        <layout class="ch.qos.logback.classic.html.HTMLLayout"/>
+    </appender>
+
+    <!-- 异步日志 -->
+    <appender name="asyncInfo" class="ch.qos.logback.classic.AsyncAppender">
+        <!--默认不丢失日志 如果队列超过80% 则会丢失TRACT\DEBUG\INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 默认256 队列大小 -->
+        <queueSize>256</queueSize>
+        <!--appender只能添加一个，需要配置多个异步的话 需要配置多个appender-->
+        <appender-ref ref="rollFile"/>
+    </appender>
+
+    <!--可以自定义Logger不用集成rootLogger additivity属性表示自定义Logger对象是否继承RootLogger-->
+    <!-- 配置的所有appender不绑定的话就不会生效 -->
+<!--    <logger name="com.example.easyexceldemo" additivity="false">-->
+<!--        <appender-ref ref="STDOUT"/>-->
+<!--    </logger>-->
+
+    <root level="DEBUG">
+        <appender-ref ref="autoMail"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

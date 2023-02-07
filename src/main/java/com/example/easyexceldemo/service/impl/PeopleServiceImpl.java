@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.easyexceldemo.utils.Result;
 import com.example.easyexceldemo.utils.UuidUtils;
 import com.example.easyexceldemo.vo.PeopleVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ import java.util.List;
  * @author qqq
  * @since 2022-11-17
  */
+@Slf4j
 @Service
 public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> implements IPeopleService {
 
@@ -60,6 +62,9 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> impleme
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         BeanUtils.copyProperties(people,peopleVo);
         peopleVo.setBirthday(birthday.format(fmt));
+        for (int i = 0;i < 10000; i++){
+            log.info("测试");
+        }
         return Result.success(peopleVo);
     }
 
