@@ -22,6 +22,7 @@ public class LogbackTestController {
      */
     @GetMapping("/test")
     public void test(){
+        //测试logback(基于标记发送日志给邮箱)邮箱发送
         Marker notify_admin = MarkerFactory.getMarker("a");
         log.error(notify_admin,"This is a serious error requiring the admin's attention", new Exception("Just testing"));
     }

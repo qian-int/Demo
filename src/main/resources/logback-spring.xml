@@ -121,8 +121,8 @@
 <!--        <appender-ref ref="STDOUT"/>-->
 <!--    </logger>-->
 
-    <root level="DEBUG">
-        <appender-ref ref="autoMail"/>
+    <root level="info">
+<!--        <appender-ref ref="rolling"/>-->
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

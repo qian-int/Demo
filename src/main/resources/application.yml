@@ -9,6 +9,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   main:
     allow-circular-references: true
+  rabbitmq:
+    host: 127.0.0.1
+    port: 15672
+    username: guest
+    password: guest
 
 mybatis-plus:
   #配置mybatis-plus逻辑删除
