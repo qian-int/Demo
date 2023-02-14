@@ -11,9 +11,16 @@ spring:
     allow-circular-references: true
   rabbitmq:
     host: 127.0.0.1
-    port: 15672
-    username: guest
-    password: guest
+    port: 5672
+    username: qqq
+    password: qianqiang0216
+    #虚拟主机
+    virtual-host: testHost
+    #确认消息已发送到交换机(Exchange)
+    #publisher-confirms:true
+    publisher-confirm-type: correlated
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true
 
 mybatis-plus:
   #配置mybatis-plus逻辑删除
