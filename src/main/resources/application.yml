@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3308/test?serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3308/test?serverTimezone=GMT2B%8&useSSL=false&characterEncoding=utf8
     username: root
     password: password
     driver-class-name: com.mysql.jdbc.Driver
@@ -21,6 +21,22 @@ spring:
     publisher-confirm-type: correlated
     #确认消息已发送到队列(Queue)
     publisher-returns: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 20000
+    password: 123456
+    jedis:
+      pool:
+        #最大连接数
+        max-active: 8
+        #最大阻塞等待时间(负数表示没有限制)
+        max-wait: -1
+        #最大空闲
+        max-idle: 8
+        #最小空闲
+        min-idle: 0
+
 
 mybatis-plus:
   #配置mybatis-plus逻辑删除
@@ -51,3 +67,10 @@ aliyun:
     appName: test
     #鉴权url过期时间 有效时间（秒）
     identUrlVaildTime: 1800
+
+#线程池 参数的配置
+thread:
+  core-size: 20
+  max-size: 200
+  keep-alive-time: 10
+

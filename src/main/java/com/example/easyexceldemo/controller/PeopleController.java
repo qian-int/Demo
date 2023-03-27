@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * <p>
@@ -65,6 +66,16 @@ public class PeopleController {
         People people = PeopleServiceImpl.getPeople(peopleDto);
         return Result.success(peopleService.save(people));
     }
+
+    /**
+     * 查询人员列表
+     * @return
+     */
+    @GetMapping("/list")
+    public Result<List<People>> getPeopleList(){
+        return Result.success(peopleService.selectPeopleList());
+    }
+
 
     /**
      * 文件导出

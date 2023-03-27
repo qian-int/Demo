@@ -20,4 +20,14 @@ public class PeopleVo {
 
     private String birthday;
 
+    private Integer business;
+
+    private Integer businessTwo;
+
+    private Integer businessThree;
+
+    private Integer businessFour;
+
+    private Integer businessFive;
+
 }

@@ -52,4 +52,11 @@ public interface IPeopleService extends IService<People> {
      */
     Result<String> importData(MultipartFile file) throws IOException;
 
+    /**
+     * 查询人员列表
+     * @return list
+     */
+    List<People> selectPeopleList();
+
+
 }
